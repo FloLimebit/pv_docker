@@ -4,7 +4,7 @@
 # Version 1.6 
 # =============================================================================
 
-FROM quay.io/centos/centos:stream9
+FROM arm32v7/centos
 MAINTAINER JB <john@globaldyne.co.uk>
 
 ARG git_repo=master
