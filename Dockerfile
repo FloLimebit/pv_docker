@@ -4,7 +4,7 @@
 # Version 1.6 
 # =============================================================================
 
-FROM arm32v7/centos
+FROM --platform=linux/amd64 quay.io/centos/centos:stream9
 MAINTAINER JB <john@globaldyne.co.uk>
 
 ARG git_repo=master
@@ -45,13 +45,15 @@ RUN ln -sf /usr/share/zoneinfo/UTC /etc/localtime \
 	&& echo "NETWORKING=yes" > /etc/sysconfig/network
 
 RUN sed -i \
-        -e 's~^#ServerName www.example.com:80$~ServerName pvault~g' \
-        -e 's~^ServerSignature On$~ServerSignature Off~g' \
-        -e 's~^ServerTokens OS$~ServerTokens Prod~g' \
-        -e 's~^DirectoryIndex \(.*\)$~DirectoryIndex \1 index.php~g' \
-        -e 's~^IndexOptions \(.*\)$~#IndexOptions \1~g' \
-        -e 's~^IndexIgnore \(.*\)$~#IndexIgnore \1~g' \
-        /etc/httpd/conf/httpd.conf
+	-e 's~^#ServerName www.example.com:80$~ServerName pvault~g' \
+	-e 's~^ServerSignature On$~ServerSignature Off~g' \
+	-e 's~^ServerTokens OS$~ServerTokens Prod~g' \
+	-e 's~^DirectoryIndex \(.*\)$~DirectoryIndex \1 index.php~g' \
+	-e 's~^IndexOptions \(.*\)$~#IndexOptions \1~g' \
+	-e 's~^IndexIgnore \(.*\)$~#IndexIgnore \1~g' \
+	/etc/httpd/conf/httpd.conf
+
+RUN echo "Mutex posixsem" >> /etc/httpd/conf/httpd.conf
 
 RUN sed -i \
 	-e 's~^;date.timezone =$~date.timezone = UTC~g' \
