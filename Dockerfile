@@ -9,6 +9,7 @@ MAINTAINER JB <john@globaldyne.co.uk>
 
 ARG git_repo=master
 
+RUN dnf update -y
 RUN dnf install -y epel-release
 RUN dnf -y update 
 #RUN dnf -y module enable php:7.4 
